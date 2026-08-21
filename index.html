@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>機工士 技能循環表 · 30 / 40 / 50 / 60 / 70 / 80 / 90 / 100</title>
+<style>
+  :root{
+    --ink:#0F1418;
+    --ink-2:#151C22;
+    --ink-3:#1D262E;
+    --line:rgba(230,237,242,.10);
+    --line-2:rgba(230,237,242,.22);
+    --cream:#E6EDF2;
+    --steel:#8496A3;
+    --heat:#F0902C;
+    --battery:#3FBFA8;
+    --blueprint:rgba(63,191,168,.06);
+    --display:"Oswald","Roboto Condensed","Arial Narrow","Haettenschweiler","Noto Sans TC","PingFang TC",sans-serif;
+    --body:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--ink);color:var(--cream);
+    font-family:var(--body);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;
+    background-image:
+      linear-gradient(var(--blueprint) 1px, transparent 1px),
+      linear-gradient(90deg, var(--blueprint) 1px, transparent 1px),
+      radial-gradient(680px 340px at 85% -4%, rgba(240,144,44,.14), transparent 70%);
+    background-size:44px 44px, 44px 44px, auto;
+  }
+  .wrap{max-width:1140px;margin:0 auto;padding:0 22px 90px}
+
+  header.mast{padding:56px 0 24px;border-bottom:1px solid var(--line-2)}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--battery);margin:0 0 14px}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(36px,7vw,66px);line-height:1;margin:0;letter-spacing:.01em;text-transform:none}
+  h1 .en{display:block;font-size:.28em;letter-spacing:.36em;color:var(--steel);margin-top:14px;text-transform:uppercase;font-family:var(--mono);font-weight:400}
+  .lede{max-width:64ch;color:#A9B8C2;margin:22px 0 0}
+  .lede b{color:var(--cream);font-weight:600}
+  .lede .h{color:var(--heat)} .lede .b{color:var(--battery)}
+
+  .tabs{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;background:rgba(15,20,24,.96);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line-2);margin:0 -22px;padding:0 22px}
+  .tab{appearance:none;background:none;border:0;border-bottom:2px solid transparent;color:var(--steel);
+    cursor:pointer;padding:13px 16px 10px;font-family:var(--mono);transition:color .18s,border-color .18s;text-align:center}
+  .tab .lv{font-family:var(--display);font-weight:700;font-size:23px;display:block;line-height:1}
+  .tab .ex{font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+  .tab:hover{color:var(--cream)}
+  .tab[aria-selected="true"]{color:var(--cream);border-bottom-color:var(--heat)}
+  .tab:focus-visible{outline:2px solid var(--battery);outline-offset:-2px}
+
+  .panel[hidden]{display:none}
+  .panel{animation:fade .3s ease both}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .thesis{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:34px;padding:34px 0 10px;border-bottom:1px solid var(--line)}
+  @media(max-width:780px){.thesis{grid-template-columns:1fr;gap:20px}}
+  .thesis h2{font-family:var(--display);font-weight:700;font-size:28px;margin:0 0 12px;line-height:1.2}
+  .thesis p{margin:0;color:#A9B8C2}
+  .why{list-style:none;margin:0;padding:0}
+  .why li{padding:11px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:32px 1fr;gap:12px;align-items:start;color:#A9B8C2;font-size:14px}
+  .why li:last-child{border-bottom:1px solid var(--line)}
+  .why .k{font-family:var(--mono);font-size:10.5px;color:var(--battery);padding-top:4px}
+  .why b{color:var(--cream);font-weight:600}
+
+  section.block{padding:34px 0 6px;border-bottom:1px solid var(--line)}
+  section.block:last-of-type{border-bottom:0}
+  .head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  .head h3{font-family:var(--display);font-weight:700;font-size:24px;margin:0}
+  .head .meta{font-family:var(--mono);font-size:11px;letter-spacing:.13em;color:var(--battery);text-transform:uppercase}
+  .head .rule{flex:1;height:1px;background:var(--line-2);min-width:30px}
+  .sub{color:#8D9DA9;font-size:13.5px;margin:0 0 20px;max-width:76ch}
+
+  .rail{display:flex;flex-wrap:wrap;align-items:flex-start;gap:0 3px}
+  .step{position:relative;width:94px;padding:10px 4px 6px;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .step .n{font-family:var(--mono);font-size:10px;color:var(--steel);letter-spacing:.08em;margin-bottom:6px}
+  .ico{width:46px;height:46px;border-radius:2px;display:block;background:var(--ink-3);border:1px solid var(--line-2);object-fit:cover}
+  .fallback{width:46px;height:46px;border-radius:2px;background:linear-gradient(150deg,var(--ink-3),#26323C);
+    border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:18px;color:var(--heat)}
+  .step .nm{font-size:12.5px;line-height:1.35;margin-top:7px}
+  .step .en{font-family:var(--mono);font-size:9px;letter-spacing:.04em;color:var(--steel);line-height:1.3;margin-top:2px;word-break:break-word}
+  .step .tip{font-size:10.5px;color:#7C8B97;line-height:1.35;margin-top:4px}
+  .step.big .ico,.step.big .fallback{border-color:rgba(240,144,44,.7);box-shadow:0 0 0 1px rgba(240,144,44,.18)}
+  .step.bat .ico,.step.bat .fallback{border-color:rgba(63,191,168,.7);box-shadow:0 0 0 1px rgba(63,191,168,.18)}
+  .gauge{display:flex;gap:5px;margin-top:5px;font-family:var(--mono);font-size:9px;letter-spacing:.02em}
+  .gauge .gh{color:var(--heat)} .gauge .gb{color:var(--battery)}
+
+  .weave{width:94px;padding:0 4px 6px;display:flex;flex-direction:column;align-items:center;gap:5px}
+  .weave .pip{display:flex;align-items:center;gap:6px;border:1px dashed rgba(240,144,44,.45);border-radius:2px;
+    padding:3px 8px 3px 4px;background:rgba(240,144,44,.06);max-width:100%}
+  .weave img,.weave .fb{width:20px;height:20px;border-radius:2px;flex:0 0 20px;background:var(--ink-3);
+    display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--heat);border:1px solid var(--line-2)}
+  .weave .lb{font-size:10px;color:#C0CCD5;line-height:1.2;text-align:left}
+
+  .lane{position:relative;border:1px solid rgba(240,144,44,.45);border-left-width:3px;border-radius:2px;
+    padding:14px 12px 4px;margin:6px 0 18px;background:linear-gradient(90deg,rgba(240,144,44,.07),transparent 60%)}
+  .lane .lb{position:absolute;top:-9px;left:12px;background:var(--ink);padding:0 7px;
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--heat)}
+  .lane .desc{font-size:12.5px;color:#8D9DA9;margin:0 0 4px;max-width:70ch}
+
+  .ladder{list-style:none;margin:0;padding:0;counter-reset:p;max-width:840px}
+  .ladder li{counter-increment:p;display:grid;grid-template-columns:30px 46px 1fr;gap:14px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+  .ladder li:last-child{border-bottom:1px solid var(--line)}
+  .ladder li::before{content:counter(p);font-family:var(--display);font-weight:700;font-size:19px;color:var(--heat);text-align:center;line-height:1}
+  .ladder.ogcd li::before{color:var(--battery)}
+  .ladder .txt strong{display:block;font-size:14.5px;font-weight:600}
+  .ladder .txt span{font-size:12.5px;color:#8D9DA9}
+  .ladder .txt em{font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--steel);margin-left:8px}
+
+  .callout{border-left:2px solid var(--battery);padding:2px 0 2px 16px;margin:20px 0 4px;color:#A9B8C2;font-size:13.5px;max-width:78ch}
+  .callout b{color:var(--cream)}
+
+  footer{padding:44px 0 0;color:var(--steel);font-size:12.5px;max-width:80ch}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:26px 0 18px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--steel)}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+  @media(max-width:520px){.step,.weave{width:80px}.ico,.fallback{width:40px;height:40px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Final Fantasy XIV · 7.x</p>
+  <h1>機工士 技能循環<span class="en">Machinist · Rotation by Level</span></h1>
+  <p class="lede">機工士沒有詠唱、沒有資源門檻，全部的技術含量都壓在兩件事上：<b class="h">熱量</b>換來的 1.5 秒 GCD 窗口要塞什麼，<b class="b">電池</b>要在哪一刻倒給人偶。這裡把每個等級的按鍵順序按這兩條線排出來。</p>
+</header>
+
+<div class="tabs" role="tablist" aria-label="等級"></div>
+<main id="panels"></main>
+
+<footer>
+  <div class="legend">
+    <span><i style="background:#F0902C"></i>熱量／超荷窗</span>
+    <span><i style="background:#3FBFA8"></i>電池／人偶</span>
+    <span><i style="background:none;border:1px dashed rgba(240,144,44,.8)"></i>oGCD 插隊</span>
+  </div>
+  <p>順序由官方技能表的威力、冷卻、熱量與電池增減推算。三條貫穿全等級的結論：<br>
+  ① <b>野火只能和超荷一起開</b>。野火 10 秒、每落地一個武器技疊一層、最多 6 層；2.5 秒的 GCD 十秒內只塞得下 4 個，只有超荷把 GCD 壓到 1.5 秒才疊得滿。<br>
+  ② <b>超荷窗裡只放烈焰彈</b>。鑽頭、空氣錨、鏈鋸有自己的冷卻，但按下去會把共用 GCD 拉回 2.5 秒，等於自己掐掉窗口。<br>
+  ③ <b>電池線性換人偶傷害</b>，50 起跳、100 封頂。所以電池不是「滿了就倒」，而是「算好在爆發窗前剛好 100」。</p>
+</footer>
+
+</div>
+
+<script>
+const B = "https://lds-img.finalfantasyxiv.com/d/";
+const A = {
+  splitshot:["8060c2f198141fb9c4d4202e298c212c15a82e88","分裂彈","Split Shot"],
+  slugshot:["63bb059658f193d08de8cd45e4a95e7bed0418b8","獨頭彈","Slug Shot"],
+  cleanshot:["d6d762f987ab51e9840cbf5229251838b16078b5","狙擊彈","Clean Shot"],
+  hsplit:["cac7ff217edfabca410218ec69323060aed0caaa","熱分裂彈","Heated Split Shot"],
+  hslug:["bb394365a76fac1c38ff540c8c81881d79680b62","熱獨頭彈","Heated Slug Shot"],
+  hclean:["57fa0a309dc4d53d5edc52aad068a93788715c4c","熱狙擊彈","Heated Clean Shot"],
+  hotshot:["b297b6034baa7347d3a53a12910b102914ce3c3e","熱彈","Hot Shot"],
+  airanchor:["2d5e4d7a3787c164fa36605a5e868143326f5b9a","空氣錨","Air Anchor"],
+  drill:["ecb2da5330a2f9bfa05671f5fa843daecde471a6","鑽頭","Drill"],
+  chainsaw:["ebcc4c4bc77ed9eb835ca7ee6c1755052a997805","鏈鋸","Chain Saw"],
+  excavator:["6e221fc321a6d40ecac7a908c5b8c144c8c693a3","挖掘者","Excavator"],
+  reassemble:["55906cd43fffdf7bcc09790b1b02b19edc6b2e8e","整備","Reassemble"],
+  gauss:["e6959a3306b601fc9e5987712f6d9ea247a7a566","虹吸彈","Gauss Round"],
+  ricochet:["5556960a2e8ce389c2117d13c6d182f41943c3c9","彈射","Ricochet"],
+  doublecheck:["5de8d4517d7e5179cc341ecb2d0bb63e0d716492","雙重檢查","Double Check"],
+  checkmate:["f44e0b84bfe54b08662b521becbb338225ea90c9","將死","Checkmate"],
+  hypercharge:["092ad12e9867fd64a23a705bd0dd67215b793ae5","超荷","Hypercharge"],
+  heatblast:["868f1e47a66f3d747213accc2b7d37f2c4464f8e","熱衝擊","Heat Blast"],
+  blazing:["c70341dbb174a9c43c76249ae4b7c40aefbbf40a","烈焰彈","Blazing Shot"],
+  wildfire:["6d73e45fbbfb35ad0a4f8b4a73753e6a06a37651","野火","Wildfire"],
+  detonator:["4fd81a7627fd0706b03ca3685e383bf8a19518c9","引爆","Detonator"],
+  barrel:["4a4a5d764fa65a4514f89fdc77ac7956e3f2e7de","槍管加熱","Barrel Stabilizer"],
+  fullmetal:["9c5bb54095373de5764bcfee0205f998f57b986b","全金屬爆發","Full Metal Field"],
+  rook:["7d6539171b0c158f7ca5e1ed4a112e6336601646","車式浮空炮塔","Rook Autoturret"],
+  queen:["6b7ba10a27554510b8d25429592d040331405b14","後式自走人偶","Automaton Queen"],
+  queenod:["cc0d8c0798f0a092f546726f06a8deb067ad44d3","人偶超載","Queen Overdrive"],
+  autocrossbow:["73035ee439401fc6216782e74ce892f061d71214","自動弩","Auto Crossbow"],
+  bioblaster:["23329a987c4b36fd72121e3362363a179a16d8d0","毒菌衝擊","Bioblaster"],
+  scattergun:["7a419e1dcf06b3d6fba2aef9afdb340db269a304","霰彈槍","Scattergun"],
+  tactician:["570cc0bbf4a1478e35f52075640fd9ec6c7ed0f6","戰術復位","Tactician"],
+  dismantle:["94eaa7aadfa4d857c00551af690f42bb5d7a4a94","崩解","Dismantle"],
+  potion:[null,"力量藥","Tincture"]
+};
+
+function S(a,o){return Object.assign({t:"gcd",a},o||{});}
+function O(list){return {t:"weave",list};}
+function LANE(label,desc,steps){return {t:"lane",label,desc,steps};}
+
+const LEVELS=[
+{
+  lv:30, ex:"轉職", cap:"只有連擊和兩條冷卻",
+  thesis:"30 級的機工士還沒有熱衝擊，超荷只換來「接下來十秒武器技威力 +20」。這個等級真正要守的只有兩件事：連擊不要斷，熱彈冷卻一好就丟。",
+  why:[
+    ["連擊","分裂彈 → 獨頭彈 → 狙擊彈。斷一次，狙擊彈就從 270 掉回 100，<b>沒有任何插入招值得付這個代價</b>。"],
+    ["熱彈","40 秒自己一條冷卻，<b>不佔連擊進度</b>，所以轉好就直接插在連擊中間，不用等。"],
+    ["整備","保證下一發武器技暴擊直擊。這個等級最高威力的武器技是連擊尾的狙擊彈（270），整備就給它。"],
+    ["熱量","連擊每一段 +5，大約十個 GCD 存滿 50。<b>存滿就開超荷</b>，別讓熱量卡在上限白流。"]
+  ],
+  blocks:[
+    {title:"開場", meta:"Opener",
+     rows:[
+      S("splitshot",{n:"1",g:["H+5",""]}),
+      O([["potion",""]]),
+      S("slugshot",{n:"2",g:["H+5",""]}),
+      O([["reassemble","給下一發"]]),
+      S("cleanshot",{n:"3",tip:"暴擊直擊",g:["H+5",""]}),
+      S("hotshot",{n:"4",tip:"冷卻好就插"}),
+      O([["gauss",""]]),
+      S("splitshot",{n:"5",g:["H+5",""]}),
+      S("slugshot",{n:"6",g:["H+5",""]}),
+      S("cleanshot",{n:"7",g:["H+5",""]}),
+      S("splitshot",{n:"8",g:["H+5",""]}),
+      S("slugshot",{n:"9",g:["H+5",""]}),
+      S("cleanshot",{n:"10",tip:"熱量約 50",g:["H+5",""]}),
+      O([["hypercharge","10 秒 +20 威力"]]),
+      S("splitshot",{n:"11"}),
+      S("slugshot",{n:"12"}),
+      S("cleanshot",{n:"13"})
+     ]},
+    {title:"常駐優先級", meta:"Priority",
+     sub:"連擊是底層節奏，其餘的看冷卻插進去。",
+     ladder:[
+      ["hotshot","熱彈","冷卻好就插，不影響連擊進度","40s"],
+      ["splitshot","分裂彈 → 獨頭彈 → 狙擊彈","主連擊，永遠不要斷","2.5s"]
+     ],
+     ogcd:[
+      ["gauss","虹吸彈","冷卻好就丟","30s"],
+      ["reassemble","整備","給狙擊彈（連擊尾）","55s"],
+      ["hypercharge","超荷","熱量到 50 就用，避免溢出","10s"]
+     ]}
+  ]
+},
+{
+  lv:40, ex:"熱衝擊", cap:"超荷第一次變成真正的爆發",
+  thesis:"35 級的熱衝擊把超荷從一個小增益變成整個職業的核心：五層超荷＝五發 1.5 秒的熱衝擊，等於用三個 GCD 的時間打出五發。40 級再加上電池與炮塔。",
+  why:[
+    ["1.5 秒","熱衝擊的冷卻只有 1.5 秒，而且會<b>把這個冷卻套用到所有武器技上</b>。五發打完只花 7.5 秒。"],
+    ["連鎖","每發熱衝擊讓虹吸彈冷卻 −15 秒，所以超荷窗裡可以連續丟虹吸彈，不會空插。"],
+    ["電池","狙擊彈 +10、熱彈 +20。滿 50 就放車式浮空炮塔，<b>電池卡在上限等於直接損失</b>。"],
+    ["整備","熱衝擊只有 200，仍然低於狙擊彈的 270，所以整備繼續給連擊尾。"]
+  ],
+  blocks:[
+    {title:"開場", meta:"Opener",
+     rows:[
+      S("splitshot",{n:"1",g:["H+5",""]}),
+      O([["potion",""]]),
+      S("slugshot",{n:"2",g:["H+5",""]}),
+      O([["reassemble",""]]),
+      S("cleanshot",{n:"3",cls:"bat",tip:"暴擊直擊",g:["H+5","B+10"]}),
+      S("hotshot",{n:"4",cls:"bat",g:["","B+20"]}),
+      O([["gauss",""]]),
+      S("splitshot",{n:"5",g:["H+5",""]}),
+      S("slugshot",{n:"6",g:["H+5",""]}),
+      S("cleanshot",{n:"7",cls:"bat",g:["H+5","B+10"]}),
+      O([["rook","電池 40→放不了，等下一段"]]),
+      S("splitshot",{n:"8",g:["H+5",""]}),
+      S("slugshot",{n:"9",g:["H+5",""]}),
+      S("cleanshot",{n:"10",cls:"bat",tip:"電池 50 · 熱量 50",g:["H+5","B+10"]}),
+      O([["rook","放炮塔"],["hypercharge","開超荷"]]),
+      LANE("超荷窗 · GCD 1.5 秒","五發熱衝擊連打，中間把虹吸彈插滿。",[
+        S("heatblast",{n:"11",cls:"big"}),
+        S("heatblast",{n:"12",cls:"big"}),
+        S("heatblast",{n:"13",cls:"big"}),
+        S("heatblast",{n:"14",cls:"big"}),
+        S("heatblast",{n:"15",cls:"big"})
+      ]),
+      S("splitshot",{n:"16",tip:"回到連擊"})
+     ]},
+    {title:"常駐優先級", meta:"Priority",
+     ladder:[
+      ["hypercharge","超荷 → 熱衝擊 ×5","熱量 50 就開；窗內只放熱衝擊","10s"],
+      ["hotshot","熱彈","冷卻好就插","40s"],
+      ["splitshot","分裂彈 → 獨頭彈 → 狙擊彈","主連擊","2.5s"]
+     ],
+     ogcd:[
+      ["gauss","虹吸彈","超荷窗內連丟（每發熱衝擊 −15 秒）","30s"],
+      ["reassemble","整備","給狙擊彈","55s"],
+      ["rook","車式浮空炮塔","電池 50 就放","電池 50"]
+     ]}
+  ]
+},
+{
+  lv:50, ex:"野火", cap:"野火只能綁在超荷上",
+  thesis:"45 級的野火是機工士第一個真正的爆發技，但它有一個硬條件：十秒內要落地六個武器技。2.5 秒的 GCD 只塞得下四個——所以野火從誕生的那一刻起就注定要和超荷一起按。",
+  why:[
+    ["六的門檻","野火每落地一個武器技疊一層、最多六層。<b>只有 1.5 秒的熱衝擊塞得滿</b>，這是整個職業最重要的一條綁定。"],
+    ["插隊順序","同一個空檔<b>先按超荷、再按野火</b>。反過來的話，野火的十秒會先被前面那個 2.5 秒的 GCD 吃掉一截。"],
+    ["第六層","五發熱衝擊只有五層，窗口結束後的第一個一般武器技補上第六層，野火剛好在時限內引爆。"],
+    ["彈射","50 級加入，和虹吸彈一樣吃熱衝擊的減冷卻。超荷窗內兩個交替丟，才不會浪費插隊空檔。"]
+  ],
+  blocks:[
+    {title:"開場", meta:"Opener",
+     rows:[
+      S("splitshot",{n:"1",g:["H+5",""]}),
+      O([["potion",""]]),
+      S("slugshot",{n:"2",g:["H+5",""]}),
+      O([["reassemble",""]]),
+      S("cleanshot",{n:"3",cls:"bat",tip:"暴擊直擊",g:["H+5","B+10"]}),
+      S("hotshot",{n:"4",cls:"bat",g:["","B+20"]}),
+      O([["gauss",""]]),
+      S("splitshot",{n:"5",g:["H+5",""]}),
+      S("slugshot",{n:"6",g:["H+5",""]}),
+      S("cleanshot",{n:"7",cls:"bat",g:["H+5","B+10"]}),
+      O([["ricochet",""]]),
+      S("splitshot",{n:"8",g:["H+5",""]}),
+      S("slugshot",{n:"9",g:["H+5",""]}),
+      S("cleanshot",{n:"10",cls:"bat",tip:"電池 50 · 熱量 50",g:["H+5","B+10"]}),
+      O([["rook",""],["hypercharge","先按超荷"]]),
+      LANE("超荷窗 ＋ 野火 · GCD 1.5 秒","超荷之後立刻補野火，接著五發熱衝擊；虹吸彈與彈射交替插滿。",[
+        S("wildfire",{n:"·",cls:"big",tip:"插在超荷之後"}),
+        S("heatblast",{n:"11",cls:"big"}),
+        S("heatblast",{n:"12",cls:"big"}),
+        S("heatblast",{n:"13",cls:"big"}),
+        S("heatblast",{n:"14",cls:"big"}),
+        S("heatblast",{n:"15",cls:"big"})
+      ]),
+      S("splitshot",{n:"16",tip:"第六層 · 野火引爆"})
+     ]},
+    {title:"常駐優先級", meta:"Priority",
+     ladder:[
+      ["wildfire","野火 ＋ 超荷","兩個永遠一起按，120 秒一次","120s"],
+      ["hypercharge","超荷 → 熱衝擊 ×5","非野火的那幾次照樣用掉，避免熱量溢出","10s"],
+      ["hotshot","熱彈","冷卻好就插","40s"],
+      ["splitshot","分裂彈 → 獨頭彈 → 狙擊彈","主連擊","2.5s"]
+     ],
+     ogcd:[
+      ["gauss","虹吸彈","超荷窗內連丟","30s"],
+      ["ricochet","彈射","與虹吸彈交替","30s"],
+      ["reassemble","整備","給狙擊彈","55s"],
+      ["rook","車式浮空炮塔","電池 50 就放","電池 50"]
+     ]}
+  ]
+},
+{
+  lv:60, ex:"鑽頭", cap:"鑽頭接手最高單發",
+  thesis:"58 級的鑽頭是第一個把整備從連擊尾搶走的技能。同時連擊前兩段升級成熱分裂彈與熱獨頭彈，威力上去了但熱量產出沒變——節奏其實沒動，只是每一格都變重。",
+  why:[
+    ["整備轉移","鑽頭的單發威力遠高於連擊尾，<b>整備從狙擊彈改給鑽頭</b>。這是整個升級過程中最容易忘記調整的一件事。"],
+    ["不佔連擊","鑽頭有自己的 20 秒冷卻，按下去不會打斷連擊進度，所以直接插在連擊之間。"],
+    ["不要進窗","鑽頭<b>不能塞進超荷窗</b>——它會把共用 GCD 從 1.5 秒拉回 2.5 秒，等於自己掐掉窗口的後半段。"],
+    ["自動弩","52 級的自動弩是超荷窗的範圍版本；單體時窗內永遠只放熱衝擊。"]
+  ],
+  blocks:[
+    {title:"開場", meta:"Opener",
+     rows:[
+      S("hsplit",{n:"1",g:["H+5",""]}),
+      O([["potion",""]]),
+      S("hslug",{n:"2",g:["H+5",""]}),
+      O([["reassemble","改給鑽頭"]]),
+      S("drill",{n:"3",cls:"big",tip:"暴擊直擊"}),
+      S("cleanshot",{n:"4",cls:"bat",g:["H+5","B+10"]}),
+      S("hotshot",{n:"5",cls:"bat",g:["","B+20"]}),
+      O([["gauss",""]]),
+      S("hsplit",{n:"6",g:["H+5",""]}),
+      S("hslug",{n:"7",g:["H+5",""]}),
+      S("cleanshot",{n:"8",cls:"bat",g:["H+5","B+10"]}),
+      O([["rook",""],["ricochet",""]]),
+      S("drill",{n:"9",cls:"big",tip:"第二次冷卻"}),
+      S("hsplit",{n:"10",tip:"熱量 50",g:["H+5",""]}),
+      O([["hypercharge","先按"],["wildfire","再按"]]),
+      LANE("超荷窗 ＋ 野火 · GCD 1.5 秒","窗內只放熱衝擊，任何有自己冷卻的武器技都會把 GCD 拉回 2.5 秒。",[
+        S("heatblast",{n:"11",cls:"big"}),
+        S("heatblast",{n:"12",cls:"big"}),
+        S("heatblast",{n:"13",cls:"big"}),
+        S("heatblast",{n:"14",cls:"big"}),
+        S("heatblast",{n:"15",cls:"big"})
+      ]),
+      S("hslug",{n:"16",tip:"第六層 · 野火引爆"})
+     ]},
+    {title:"常駐優先級", meta:"Priority",
+     ladder:[
+      ["wildfire","野火 ＋ 超荷","兩個一起按","120s"],
+      ["drill","鑽頭","冷卻好就插，單發威力最高","20s"],
+      ["hotshot","熱彈","冷卻好就插","40s"],
+      ["hypercharge","超荷 → 熱衝擊 ×5","非野火那幾次照用，避免熱量溢出","10s"],
+      ["hsplit","熱分裂彈 → 熱獨頭彈 → 狙擊彈","主連擊","2.5s"]
+     ],
+     ogcd:[
+      ["gauss","虹吸彈","超荷窗內連丟","30s"],
+      ["ricochet","彈射","與虹吸彈交替","30s"],
+      ["reassemble","整備","<b>給鑽頭</b>，不再給連擊尾","55s"],
+      ["rook","車式浮空炮塔","電池 50 就放","電池 50"]
+     ]}
+  ]
+},
+{
+  lv:70, ex:"槍管加熱", cap:"兩分鐘裡有兩個超荷窗",
+  thesis:"66 級的槍管加熱直接送一次不花熱量的超荷。從此兩分鐘的節奏被鎖成：一個窗跟野火綁在一起、另一個窗單獨用掉熱量，兩者都不能漏。",
+  why:[
+    ["免費超荷","槍管加熱 120 秒給一次「已充能」狀態，等於<b>不花 50 熱量就開一個超荷窗</b>。它和野火同為 120 秒，天然對齊。"],
+    ["分工","跟野火綁的那個窗用槍管加熱的免費充能；另一個窗用自己存的 50 熱量，安排在爆發窗之外。"],
+    ["烈焰彈","68 級後熱衝擊升級成烈焰彈（240），減的是虹吸彈與彈射的冷卻，窗內插隊更密。"],
+    ["崩解","62 級的崩解是減傷不是輸出，別為了它擠掉插隊空檔。"]
+  ],
+  blocks:[
+    {title:"開場", meta:"Opener",
+     rows:[
+      S("hsplit",{n:"1",g:["H+5",""]}),
+      O([["potion",""]]),
+      S("hslug",{n:"2",g:["H+5",""]}),
+      O([["reassemble",""]]),
+      S("drill",{n:"3",cls:"big",tip:"暴擊直擊"}),
+      S("hclean",{n:"4",cls:"bat",g:["H+5","B+10"]}),
+      O([["barrel","免費超荷備著"]]),
+      S("hotshot",{n:"5",cls:"bat",g:["","B+20"]}),
+      S("hsplit",{n:"6",g:["H+5",""]}),
+      S("hslug",{n:"7",g:["H+5",""]}),
+      S("hclean",{n:"8",cls:"bat",g:["H+5","B+10"]}),
+      O([["rook",""],["gauss",""]]),
+      S("drill",{n:"9",cls:"big"}),
+      S("hsplit",{n:"10",g:["H+5",""]}),
+      O([["hypercharge","先按"],["wildfire","再按"]]),
+      LANE("超荷窗 ＋ 野火 · GCD 1.5 秒","烈焰彈五連，虹吸彈與彈射交替插滿。",[
+        S("blazing",{n:"11",cls:"big"}),
+        S("blazing",{n:"12",cls:"big"}),
+        S("blazing",{n:"13",cls:"big"}),
+        S("blazing",{n:"14",cls:"big"}),
+        S("blazing",{n:"15",cls:"big"})
+      ]),
+      S("hslug",{n:"16",tip:"第六層 · 野火引爆"})
+     ]},
+    {title:"常駐優先級", meta:"Priority",
+     ladder:[
+      ["wildfire","野火 ＋ 超荷","用槍管加熱的免費充能開這一個窗","120s"],
+      ["drill","鑽頭","冷卻好就插","20s"],
+      ["hotshot","熱彈","冷卻好就插","40s"],
+      ["hypercharge","超荷 → 烈焰彈 ×5","第二個窗，安排在爆發窗之外","10s"],
+      ["hsplit","熱分裂彈 → 熱獨頭彈 → 熱狙擊彈","主連擊","2.5s"]
+     ],
+     ogcd:[
+      ["barrel","槍管加熱","給爆發窗那次超荷用","120s"],
+      ["gauss","虹吸彈","超荷窗內連丟","30s"],
+      ["ricochet","彈射","與虹吸彈交替","30s"],
+      ["reassemble","整備","給鑽頭","55s"],
+      ["rook","車式浮空炮塔","電池 50 就放","電池 50"]
+     ]}
+  ]
+},
+{
+  lv:80, ex:"人偶", cap:"電池開始要算時機",
+  thesis:"76 級的空氣錨換掉熱彈，80 級的人偶取代炮塔。人偶的傷害隨電池線性縮放、50 起跳 100 封頂——電池從此不是「滿了就倒」，而是「算好在爆發窗前剛好夠」。",
+  why:[
+    ["空氣錨","660 威力 ＋20 電池、40 秒。它同時是高威力武器技和主要電池來源，<b>絕對不要拖冷卻</b>。"],
+    ["人偶時機","50 和 100 之間是線性的，沒有門檻獎勵。所以真正的最佳解是<b>讓人偶的輸出時間落在團隊增益裡</b>，而不是一到 50 就倒掉。"],
+    ["三層充能","74 級後虹吸彈與彈射各三層，超荷窗內插隊空檔終於夠用，不會出現「有空檔沒東西丟」。"],
+    ["整備","鑽頭與空氣錨都是 660，整備給哪個都行；優先給落在增益窗內的那一發。"]
+  ],
+  blocks:[
+    {title:"開場", meta:"Opener",
+     rows:[
+      S("hsplit",{n:"1",g:["H+5",""]}),
+      O([["potion",""]]),
+      S("hslug",{n:"2",g:["H+5",""]}),
+      O([["reassemble",""]]),
+      S("drill",{n:"3",cls:"big",tip:"暴擊直擊"}),
+      S("hclean",{n:"4",cls:"bat",g:["H+5","B+10"]}),
+      O([["barrel",""]]),
+      S("airanchor",{n:"5",cls:"bat",tip:"660",g:["","B+20"]}),
+      S("hsplit",{n:"6",g:["H+5",""]}),
+      S("hslug",{n:"7",g:["H+5",""]}),
+      S("hclean",{n:"8",cls:"bat",tip:"電池 40",g:["H+5","B+10"]}),
+      O([["gauss",""]]),
+      S("drill",{n:"9",cls:"big"}),
+      S("hsplit",{n:"10",g:["H+5",""]}),
+      O([["hypercharge","先按"],["wildfire","再按"]]),
+      LANE("超荷窗 ＋ 野火 · GCD 1.5 秒",null,[
+        S("blazing",{n:"11",cls:"big"}),
+        S("blazing",{n:"12",cls:"big"}),
+        S("blazing",{n:"13",cls:"big"}),
+        S("blazing",{n:"14",cls:"big"}),
+        S("blazing",{n:"15",cls:"big"})
+      ]),
+      S("hslug",{n:"16",tip:"第六層 · 野火引爆"}),
+      S("hclean",{n:"17",cls:"bat",tip:"電池 50+",g:["H+5","B+10"]}),
+      O([["queen","倒給人偶"]])
+     ]},
+    {title:"常駐優先級", meta:"Priority",
+     ladder:[
+      ["wildfire","野火 ＋ 超荷","槍管加熱那次的免費充能給它","120s"],
+      ["drill","鑽頭","冷卻好就插","20s"],
+      ["airanchor","空氣錨","660 ＋20 電池，不要拖","40s"],
+      ["hypercharge","超荷 → 烈焰彈 ×5","第二個窗，放在爆發窗外","10s"],
+      ["hsplit","熱分裂彈 → 熱獨頭彈 → 熱狙擊彈","主連擊","2.5s"]
+     ],
+     ogcd:[
+      ["queen","後式自走人偶","算好讓輸出時間落進增益窗","電池 50–100"],
+      ["barrel","槍管加熱","對齊野火","120s"],
+      ["gauss","虹吸彈","三層，超荷窗內連丟","30s"],
+      ["ricochet","彈射","三層，與虹吸彈交替","30s"],
+      ["reassemble","整備","給落在增益內的鑽頭或空氣錨","55s"]
+     ]}
+  ]
+},
+{
+  lv:90, ex:"鏈鋸", cap:"電池的第三個來源",
+  thesis:"90 級的鏈鋸補上第三條電池來源，兩分鐘剛好湊得滿 100。同時整備變成兩層充能——兩層都該塞進爆發窗，分給兩個 660。",
+  why:[
+    ["湊滿 100","電池來源變成三個：熱狙擊彈 +10、空氣錨 +20、鏈鋸 +20。<b>兩分鐘一輪剛好收得到 100</b>，這就是人偶該在爆發窗滿電下場的算術基礎。"],
+    ["整備兩層","84 級後兩層充能，<b>兩層都進爆發窗</b>，分給鑽頭與鏈鋸（或空氣錨），不要留一層在窗外。"],
+    ["人偶王牌","86 級後人偶在打樁之後追加一發，人偶的權重再往上，更該把它壓進增益。"],
+    ["鏈鋸","60 秒、660 威力的直線攻擊，單體也照丟——它是電池來源，留著不用等於少一截人偶。"]
+  ],
+  blocks:[
+    {title:"開場", meta:"Opener",
+     rows:[
+      S("hsplit",{n:"1",g:["H+5",""]}),
+      O([["potion",""]]),
+      S("hslug",{n:"2",g:["H+5",""]}),
+      O([["reassemble","第一層"]]),
+      S("drill",{n:"3",cls:"big",tip:"暴擊直擊"}),
+      S("hclean",{n:"4",cls:"bat",g:["H+5","B+10"]}),
+      O([["barrel",""]]),
+      S("airanchor",{n:"5",cls:"bat",g:["","B+20"]}),
+      O([["reassemble","第二層"]]),
+      S("chainsaw",{n:"6",cls:"bat",tip:"暴擊直擊",g:["","B+20"]}),
+      S("hsplit",{n:"7",g:["H+5",""]}),
+      S("hslug",{n:"8",g:["H+5",""]}),
+      S("hclean",{n:"9",cls:"bat",tip:"電池 60",g:["H+5","B+10"]}),
+      O([["queen","倒給人偶"],["gauss",""]]),
+      S("hsplit",{n:"10",g:["H+5",""]}),
+      O([["hypercharge","先按"],["wildfire","再按"]]),
+      LANE("超荷窗 ＋ 野火 · GCD 1.5 秒",null,[
+        S("blazing",{n:"11",cls:"big"}),
+        S("blazing",{n:"12",cls:"big"}),
+        S("blazing",{n:"13",cls:"big"}),
+        S("blazing",{n:"14",cls:"big"}),
+        S("blazing",{n:"15",cls:"big"})
+      ]),
+      S("hslug",{n:"16",tip:"第六層 · 野火引爆"}),
+      S("drill",{n:"17",cls:"big",tip:"第二次冷卻"})
+     ]},
+    {title:"常駐優先級", meta:"Priority",
+     ladder:[
+      ["wildfire","野火 ＋ 超荷","槍管加熱的免費充能給它","120s"],
+      ["drill","鑽頭","冷卻好就插","20s"],
+      ["airanchor","空氣錨","660 ＋20 電池","40s"],
+      ["chainsaw","鏈鋸","660 ＋20 電池，單體也照丟","60s"],
+      ["hypercharge","超荷 → 烈焰彈 ×5","第二個窗放在爆發窗外","10s"],
+      ["hsplit","熱分裂彈 → 熱獨頭彈 → 熱狙擊彈","主連擊","2.5s"]
+     ],
+     ogcd:[
+      ["queen","後式自走人偶","電池湊到 100 再倒，輸出時間對進增益","電池 50–100"],
+      ["reassemble","整備","兩層都進爆發窗，分給鑽頭與鏈鋸","55s / 2 層"],
+      ["barrel","槍管加熱","對齊野火","120s"],
+      ["gauss","虹吸彈","三層","30s"],
+      ["ricochet","彈射","三層","30s"]
+     ]}
+  ]
+},
+{
+  lv:100, ex:"黃金封頂", cap:"槍管加熱一次點燃三件事",
+  thesis:"100 級的槍管加熱同時給免費超荷與全金屬爆發，野火、超荷、全金屬爆發、滿電人偶全部被綁在同一個 120 秒的節點上。爆發窗的順序也因此被鎖死。",
+  why:[
+    ["三合一","槍管加熱 → 免費超荷 ＋ 全金屬爆發（900 必定暴擊直擊）。它一個按鍵決定了整個爆發窗，<b>漏一次就是漏兩分鐘</b>。"],
+    ["整備不給它","全金屬爆發明文不吃整備。所以兩層整備要給鑽頭／鏈鋸／挖掘者這些 660，<b>不要浪費在 900 上</b>。"],
+    ["鏈鋸接挖掘者","鏈鋸打完變挖掘者（再 660 ＋20 電池），兩發連著打，電池一次進 40——這是兩分鐘湊滿 100 的主力。"],
+    ["鑽頭兩層","94 級後兩層充能，爆發窗前後各放一發，冷卻不會空轉。"]
+  ],
+  blocks:[
+    {title:"開場", meta:"Opener · 完整順序",
+     sub:"前八個 GCD 把電池推到 70、把兩層整備花在 660 上，第九、十格丟出全金屬爆發與人偶，最後才是野火＋超荷的五連。",
+     rows:[
+      S("hsplit",{n:"1",g:["H+5",""]}),
+      O([["potion",""]]),
+      S("hslug",{n:"2",g:["H+5",""]}),
+      O([["reassemble","第一層"]]),
+      S("drill",{n:"3",cls:"big",tip:"暴擊直擊 · 660"}),
+      S("hclean",{n:"4",cls:"bat",g:["H+5","B+10"]}),
+      O([["barrel","→ 免費超荷 ＋ 全金屬爆發"]]),
+      S("airanchor",{n:"5",cls:"bat",tip:"660",g:["","B+20"]}),
+      O([["reassemble","第二層"]]),
+      S("chainsaw",{n:"6",cls:"bat",tip:"暴擊直擊 · 660",g:["","B+20"]}),
+      S("excavator",{n:"7",cls:"bat",tip:"660",g:["","B+20"]}),
+      O([["doublecheck",""]]),
+      S("fullmetal",{n:"8",cls:"big",tip:"900 必定暴直"}),
+      O([["queen","電池 70 倒下去"],["checkmate",""]]),
+      S("hsplit",{n:"9",g:["H+5",""]}),
+      O([["hypercharge","先按"],["wildfire","再按"]]),
+      LANE("超荷窗 ＋ 野火 · GCD 1.5 秒","五發烈焰彈連打；雙重檢查與將死交替插滿（每發烈焰彈各減 15 秒冷卻）。",[
+        S("blazing",{n:"10",cls:"big"}),
+        S("blazing",{n:"11",cls:"big"}),
+        S("blazing",{n:"12",cls:"big"}),
+        S("blazing",{n:"13",cls:"big"}),
+        S("blazing",{n:"14",cls:"big"})
+      ]),
+      S("hslug",{n:"15",tip:"第六層 · 野火引爆"}),
+      S("drill",{n:"16",cls:"big",tip:"第二層充能"}),
+      S("hclean",{n:"17",cls:"bat",g:["H+5","B+10"]})
+     ]},
+    {title:"兩分鐘爆發窗", meta:"Burst · 骨架",
+     sub:"之後每兩分鐘重複這一段。進窗前要備好：電池 100、兩層整備、鑽頭至少一層、熱量不要卡在上限。",
+     rows:[
+      O([["barrel","→ 免費超荷 ＋ 全金屬爆發"]]),
+      S("drill",{n:"1",cls:"big",tip:"整備"}),
+      O([["reassemble",""]]),
+      S("chainsaw",{n:"2",cls:"bat",tip:"整備",g:["","B+20"]}),
+      S("excavator",{n:"3",cls:"bat",g:["","B+20"]}),
+      S("airanchor",{n:"4",cls:"bat",g:["","B+20"]}),
+      O([["queen","滿電 100"]]),
+      S("fullmetal",{n:"5",cls:"big",tip:"900"}),
+      O([["hypercharge",""],["wildfire",""]]),
+      LANE("超荷窗 ＋ 野火 · GCD 1.5 秒",null,[
+        S("blazing",{n:"6",cls:"big"}),
+        S("blazing",{n:"7",cls:"big"}),
+        S("blazing",{n:"8",cls:"big"}),
+        S("blazing",{n:"9",cls:"big"}),
+        S("blazing",{n:"10",cls:"big"})
+      ]),
+      S("hsplit",{n:"11",tip:"第六層 · 引爆"})
+     ]},
+    {title:"窗外常駐優先級", meta:"Priority",
+     sub:"兩個爆發窗之間大約 100 秒。由上往下挑第一個能按的。",
+     ladder:[
+      ["fullmetal","全金屬爆發","只在槍管加熱之後存在，跟著爆發窗走","proc"],
+      ["drill","鑽頭","兩層充能，冷卻好就插","20s / 2 層"],
+      ["airanchor","空氣錨","660 ＋20 電池","40s"],
+      ["chainsaw","鏈鋸 → 挖掘者","兩發連著打，一次收 40 電池","60s"],
+      ["hypercharge","超荷 → 烈焰彈 ×5","窗外那一次用自己存的 50 熱量，避免溢出","10s"],
+      ["hsplit","熱分裂彈 → 熱獨頭彈 → 熱狙擊彈","主連擊，其餘全在冷卻時的墊招","2.5s"]
+     ],
+     ogcd:[
+      ["queen","後式自走人偶","電池 100 且對得進增益時才倒","電池 50–100"],
+      ["reassemble","整備","兩層都給 660（鑽頭／鏈鋸／挖掘者），<b>不要給全金屬爆發</b>","55s / 2 層"],
+      ["barrel","槍管加熱","爆發窗的起點，對齊野火","120s"],
+      ["doublecheck","雙重檢查","三層，超荷窗內連丟","30s"],
+      ["checkmate","將死","三層，與雙重檢查交替","30s"],
+      ["tactician","戰術復位","減傷，看機制用","90s"]
+     ]}
+  ]
+}
+];
+
+/* ---------------- render ---------------- */
+function icon(key, small){
+  const d=A[key]; const nm=d?d[1]:key;
+  if(!d||!d[0]) return `<span class="${small?'fb':'fallback'}" aria-hidden="true">${nm.slice(0,1)}</span>`;
+  return `<img class="${small?'':'ico'}" src="${B}${d[0]}.png" alt="" loading="lazy"
+    onerror="this.outerHTML='<span class=\\'${small?'fb':'fallback'}\\'>${nm.slice(0,1)}</span>'">`;
+}
+function gaugeHTML(g){
+  if(!g) return "";
+  const [h,b]=g;
+  if(!h && !b) return "";
+  return `<span class="gauge">${h?`<span class="gh">${h}</span>`:''}${b?`<span class="gb">${b}</span>`:''}</span>`;
+}
+function stepHTML(s){
+  const d=A[s.a]||[null,s.a,""];
+  return `<div class="step ${s.cls||''}">
+    <span class="n">${s.n===undefined?'':s.n}</span>
+    ${icon(s.a)}
+    <span class="nm">${d[1]}</span>
+    <span class="en">${d[2]||''}</span>
+    ${s.tip?`<span class="tip">${s.tip}</span>`:''}
+    ${gaugeHTML(s.g)}
+  </div>`;
+}
+function weaveHTML(w){
+  return `<div class="weave">${w.list.map(([k,lb])=>{
+    const d=A[k]||[null,k,""];
+    return `<span class="pip">${icon(k,true)}<span class="lb">${d[1]}${lb?'<br>'+lb:''}</span></span>`;
+  }).join("")}</div>`;
+}
+function laneHTML(l){
+  return `<div class="lane"><span class="lb">${l.label}</span>
+    ${l.desc?`<p class="desc">${l.desc}</p>`:''}
+    <div class="rail">${l.steps.map(stepHTML).join("")}</div></div>`;
+}
+function rowsHTML(rows){
+  let out="", buf=[];
+  const flush=()=>{ if(buf.length){ out+=`<div class="rail">${buf.join("")}</div>`; buf=[]; } };
+  rows.forEach(r=>{
+    if(r.t==="lane"){ flush(); out+=laneHTML(r); }
+    else if(r.t==="weave"){ buf.push(weaveHTML(r)); }
+    else buf.push(stepHTML(r));
+  });
+  flush();
+  return out;
+}
+function ladderHTML(list, cls){
+  return `<ol class="ladder ${cls||''}">${list.map(([k,t,d,tag])=>
+    `<li>${icon(k)}<span class="txt"><strong>${t}${tag?`<em>${tag}</em>`:''}</strong><span>${d}</span></span></li>`
+  ).join("")}</ol>`;
+}
+
+const tabs=document.querySelector(".tabs"), panels=document.getElementById("panels");
+LEVELS.forEach((L,i)=>{
+  const b=document.createElement("button");
+  b.className="tab"; b.type="button"; b.setAttribute("role","tab");
+  b.setAttribute("aria-selected", i===LEVELS.length-1?"true":"false");
+  b.setAttribute("aria-controls","p"+L.lv); b.id="t"+L.lv;
+  b.innerHTML=`<span class="lv">${L.lv}</span><span class="ex">${L.ex}</span>`;
+  b.addEventListener("click",()=>select(i));
+  tabs.appendChild(b);
+
+  const p=document.createElement("div");
+  p.className="panel"; p.id="p"+L.lv; p.setAttribute("role","tabpanel");
+  p.setAttribute("aria-labelledby","t"+L.lv);
+  p.hidden = i!==LEVELS.length-1;
+  p.innerHTML=`
+    <div class="thesis">
+      <div><h2>${L.cap}</h2><p>${L.thesis}</p></div>
+      <ul class="why">${L.why.map(([k,v])=>`<li><span class="k">${k}</span><span>${v}</span></li>`).join("")}</ul>
+    </div>
+    ${L.blocks.map(bk=>`
+      <section class="block">
+        <div class="head"><h3>${bk.title}</h3><span class="meta">${bk.meta||''}</span><span class="rule"></span></div>
+        ${bk.sub?`<p class="sub">${bk.sub}</p>`:''}
+        ${bk.rows?rowsHTML(bk.rows):''}
+        ${bk.ladder?ladderHTML(bk.ladder):''}
+        ${bk.ogcd?`<div class="callout"><b>oGCD 插隊順位</b>　一個 2.5 秒 GCD 塞得下兩個；超荷窗的 1.5 秒只塞得下一個。</div>${ladderHTML(bk.ogcd,'ogcd')}`:''}
+      </section>`).join("")}
+  `;
+  panels.appendChild(p);
+});
+function select(i){
+  [...tabs.children].forEach((t,j)=>t.setAttribute("aria-selected", j===i?"true":"false"));
+  [...panels.children].forEach((p,j)=>p.hidden = j!==i);
+}
+</script>
+</body>
+</html>
